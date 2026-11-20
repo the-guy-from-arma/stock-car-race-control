@@ -1,0 +1,1167 @@
+{
+  "authors": "Local Daytona setup",
+  "classification": {
+    "allowRollingStart": false,
+    "branching": false,
+    "closed": true,
+    "reversible": false
+  },
+  "date": 1759379726,
+  "defaultLaps": 3,
+  "defaultStartPosition": 301,
+  "description": "Daytona stock-car oval.",
+  "difficulty": 24,
+  "endNode": -1,
+  "forwardPrefabs": {},
+  "hideMission": false,
+  "name": "Daytona Gen 7 Oval",
+  "pacenotes": {},
+  "pathnodes": [
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Start / Finish",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.9244553857016798,
+        -0.3812902304638274,
+        0
+      ],
+      "oldId": 101,
+      "pos": [
+        -248.41939291143257,
+        422.5414514552151,
+        521.4684209368035
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 1",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.9439417821146356,
+        -0.33011196885033695,
+        0
+      ],
+      "oldId": 102,
+      "pos": [
+        -403.0617005192891,
+        362.45139258482243,
+        521.5083681459699
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 2",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.909447950335684,
+        -0.4158177793580057,
+        0
+      ],
+      "oldId": 103,
+      "pos": [
+        -557.1608050592765,
+        300.158429620455,
+        521.8508371687408
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 3",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.6836490512432297,
+        -0.7298109171108856,
+        0
+      ],
+      "oldId": 104,
+      "pos": [
+        -693.9703128061572,
+        206.59747714801605,
+        523.0941744018996
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 4",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.18616670294855844,
+        -0.9825181722051063,
+        0
+      ],
+      "oldId": 105,
+      "pos": [
+        -767.5748554535494,
+        58.906907118253,
+        523.1498284907918
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 5",
+      "navRadiusScale": 1,
+      "normal": [
+        0.3608278369251843,
+        -0.9326324421227756,
+        0
+      ],
+      "oldId": 106,
+      "pos": [
+        -752.4556505261631,
+        -105.44653063347997,
+        523.3539020085325
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 6",
+      "navRadiusScale": 1,
+      "normal": [
+        0.800531704889306,
+        -0.5992904049515735,
+        0
+      ],
+      "oldId": 107,
+      "pos": [
+        -652.8010422985243,
+        -236.9149944343434,
+        523.4674191955222
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 7",
+      "navRadiusScale": 1,
+      "normal": [
+        0.992061532353096,
+        -0.12575339369268282,
+        0
+      ],
+      "oldId": 108,
+      "pos": [
+        -499.07601598993006,
+        -297.5768452556255,
+        522.510915924857
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 8",
+      "navRadiusScale": 1,
+      "normal": [
+        0.9999896361622597,
+        0.004552753899736185,
+        0
+      ],
+      "oldId": 109,
+      "pos": [
+        -332.89726386944676,
+        -302.7744372531059,
+        521.5421797179803
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 9",
+      "navRadiusScale": 1,
+      "normal": [
+        0.9999446683295136,
+        -0.010519518970909436,
+        0
+      ],
+      "oldId": 110,
+      "pos": [
+        -166.86061223369626,
+        -302.4907201321692,
+        521.5113704247377
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 10",
+      "navRadiusScale": 1,
+      "normal": [
+        0.9999945924347171,
+        0.0032886321357275686,
+        0
+      ],
+      "oldId": 111,
+      "pos": [
+        -0.7662470056759426,
+        -303.8556247953482,
+        521.5488168291172
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 11",
+      "navRadiusScale": 1,
+      "normal": [
+        0.9999463469122278,
+        -0.010358730467115274,
+        0
+      ],
+      "oldId": 112,
+      "pos": [
+        165.27798685890536,
+        -303.42512569652445,
+        521.4975070507239
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 12",
+      "navRadiusScale": 1,
+      "normal": [
+        0.9999967191407307,
+        -0.00256158306029036,
+        0
+      ],
+      "oldId": 113,
+      "pos": [
+        331.35709615189387,
+        -305.16960536518866,
+        521.5520564829948
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 13",
+      "navRadiusScale": 1,
+      "normal": [
+        0.9998473186871212,
+        0.017473961032761644,
+        0
+      ],
+      "oldId": 114,
+      "pos": [
+        497.4682156548805,
+        -305.1145601178104,
+        521.7754854704825
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 14",
+      "navRadiusScale": 1,
+      "normal": [
+        0.9232478046966588,
+        0.3842050118397729,
+        0
+      ],
+      "oldId": 115,
+      "pos": [
+        660.6763260780432,
+        -275.73196583041204,
+        523.5898305510575
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 15",
+      "navRadiusScale": 1,
+      "normal": [
+        0.5832337896039019,
+        0.8123043436202169,
+        0
+      ],
+      "oldId": 116,
+      "pos": [
+        789.5250580558153,
+        -172.8587436858562,
+        523.6404519011187
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 16",
+      "navRadiusScale": 1,
+      "normal": [
+        0.058347134572269706,
+        0.9982963547400169,
+        0
+      ],
+      "oldId": 117,
+      "pos": [
+        843.5947529279036,
+        -16.855195392679022,
+        522.6794593205082
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 17",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.48403396025723955,
+        0.8750492130832946,
+        0
+      ],
+      "oldId": 118,
+      "pos": [
+        809.4021467450053,
+        144.58148434335735,
+        523.2712826926402
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 18",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.8492052745988904,
+        0.5280628765529947,
+        0
+      ],
+      "oldId": 119,
+      "pos": [
+        696.043652888105,
+        264.7178367789192,
+        523.2022751119956
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 19",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.9214855001032651,
+        0.3884127612468922,
+        0
+      ],
+      "oldId": 120,
+      "pos": [
+        545.3659933149319,
+        334.9670790525283,
+        521.6394716366809
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 20",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.9279948788079191,
+        0.3725929480093197,
+        0
+      ],
+      "oldId": 121,
+      "pos": [
+        391.09720858711654,
+        396.5369917964039,
+        521.6275100305943
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 21",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.952799136241285,
+        0.303601393240975,
+        0
+      ],
+      "oldId": 122,
+      "pos": [
+        236.07025156236276,
+        456.397139646759,
+        521.9086908312825
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 22",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.9980294287309643,
+        0.06274758471005469,
+        0
+      ],
+      "oldId": 123,
+      "pos": [
+        73.56856585870325,
+        491.02076435777565,
+        522.1952921762656
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    },
+    {
+      "customFields": {
+        "names": {},
+        "tags": {},
+        "types": {},
+        "values": {}
+      },
+      "mode": "manual",
+      "name": "Checkpoint 23",
+      "navRadiusScale": 1,
+      "normal": [
+        -0.9736368885453413,
+        -0.22810350559284825,
+        0
+      ],
+      "oldId": 124,
+      "pos": [
+        -91.90789805681719,
+        477.79784564576573,
+        522.2618370614889
+      ],
+      "radius": 16,
+      "recovery": -1,
+      "reverseRecovery": -1,
+      "sidePadding": [
+        1,
+        3
+      ],
+      "visible": true
+    }
+  ],
+  "prefabs": {},
+  "reversePrefabs": {},
+  "reverseStartPosition": -1,
+  "rollingReverseStartPosition": -1,
+  "rollingStartPosition": -1,
+  "segments": [
+    {
+      "capsules": {},
+      "from": 101,
+      "mode": "waypoint",
+      "name": "Oval segment 1",
+      "oldId": 201,
+      "to": 102
+    },
+    {
+      "capsules": {},
+      "from": 102,
+      "mode": "waypoint",
+      "name": "Oval segment 2",
+      "oldId": 202,
+      "to": 103
+    },
+    {
+      "capsules": {},
+      "from": 103,
+      "mode": "waypoint",
+      "name": "Oval segment 3",
+      "oldId": 203,
+      "to": 104
+    },
+    {
+      "capsules": {},
+      "from": 104,
+      "mode": "waypoint",
+      "name": "Oval segment 4",
+      "oldId": 204,
+      "to": 105
+    },
+    {
+      "capsules": {},
+      "from": 105,
+      "mode": "waypoint",
+      "name": "Oval segment 5",
+      "oldId": 205,
+      "to": 106
+    },
+    {
+      "capsules": {},
+      "from": 106,
+      "mode": "waypoint",
+      "name": "Oval segment 6",
+      "oldId": 206,
+      "to": 107
+    },
+    {
+      "capsules": {},
+      "from": 107,
+      "mode": "waypoint",
+      "name": "Oval segment 7",
+      "oldId": 207,
+      "to": 108
+    },
+    {
+      "capsules": {},
+      "from": 108,
+      "mode": "waypoint",
+      "name": "Oval segment 8",
+      "oldId": 208,
+      "to": 109
+    },
+    {
+      "capsules": {},
+      "from": 109,
+      "mode": "waypoint",
+      "name": "Oval segment 9",
+      "oldId": 209,
+      "to": 110
+    },
+    {
+      "capsules": {},
+      "from": 110,
+      "mode": "waypoint",
+      "name": "Oval segment 10",
+      "oldId": 210,
+      "to": 111
+    },
+    {
+      "capsules": {},
+      "from": 111,
+      "mode": "waypoint",
+      "name": "Oval segment 11",
+      "oldId": 211,
+      "to": 112
+    },
+    {
+      "capsules": {},
+      "from": 112,
+      "mode": "waypoint",
+      "name": "Oval segment 12",
+      "oldId": 212,
+      "to": 113
+    },
+    {
+      "capsules": {},
+      "from": 113,
+      "mode": "waypoint",
+      "name": "Oval segment 13",
+      "oldId": 213,
+      "to": 114
+    },
+    {
+      "capsules": {},
+      "from": 114,
+      "mode": "waypoint",
+      "name": "Oval segment 14",
+      "oldId": 214,
+      "to": 115
+    },
+    {
+      "capsules": {},
+      "from": 115,
+      "mode": "waypoint",
+      "name": "Oval segment 15",
+      "oldId": 215,
+      "to": 116
+    },
+    {
+      "capsules": {},
+      "from": 116,
+      "mode": "waypoint",
+      "name": "Oval segment 16",
+      "oldId": 216,
+      "to": 117
+    },
+    {
+      "capsules": {},
+      "from": 117,
+      "mode": "waypoint",
+      "name": "Oval segment 17",
+      "oldId": 217,
+      "to": 118
+    },
+    {
+      "capsules": {},
+      "from": 118,
+      "mode": "waypoint",
+      "name": "Oval segment 18",
+      "oldId": 218,
+      "to": 119
+    },
+    {
+      "capsules": {},
+      "from": 119,
+      "mode": "waypoint",
+      "name": "Oval segment 19",
+      "oldId": 219,
+      "to": 120
+    },
+    {
+      "capsules": {},
+      "from": 120,
+      "mode": "waypoint",
+      "name": "Oval segment 20",
+      "oldId": 220,
+      "to": 121
+    },
+    {
+      "capsules": {},
+      "from": 121,
+      "mode": "waypoint",
+      "name": "Oval segment 21",
+      "oldId": 221,
+      "to": 122
+    },
+    {
+      "capsules": {},
+      "from": 122,
+      "mode": "waypoint",
+      "name": "Oval segment 22",
+      "oldId": 222,
+      "to": 123
+    },
+    {
+      "capsules": {},
+      "from": 123,
+      "mode": "waypoint",
+      "name": "Oval segment 23",
+      "oldId": 223,
+      "to": 124
+    },
+    {
+      "capsules": {},
+      "from": 124,
+      "mode": "waypoint",
+      "name": "Oval segment 24",
+      "oldId": 224,
+      "to": 101
+    }
+  ],
+  "startNode": 101,
+  "startPositions": [
+    {
+      "name": "Start 1",
+      "group": "start",
+      "oldId": 301,
+      "pos": [
+        -221.0954827312936,
+        434.531133973584,
+        521.8292747911142
+      ],
+      "rot": [
+        0,
+        0,
+        -0.537145653599842,
+        0.8434895060513785
+      ]
+    },
+    {
+      "name": "Start 2",
+      "group": "start",
+      "oldId": 302,
+      "pos": [
+        -222.82957401520775,
+        438.24636309425114,
+        521.8292747911142
+      ],
+      "rot": [
+        0,
+        0,
+        -0.537145653599842,
+        0.8434895060513785
+      ]
+    },
+    {
+      "name": "Start 3",
+      "group": "start",
+      "oldId": 303,
+      "pos": [
+        -212.74438263150205,
+        437.9358322280402,
+        521.8653199290128
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5479910303639968,
+        0.8364842082434104
+      ]
+    },
+    {
+      "name": "Start 4",
+      "group": "start",
+      "oldId": 304,
+      "pos": [
+        -214.38197044275503,
+        441.69459614194005,
+        521.8653199290128
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5479910303639968,
+        0.8364842082434104
+      ]
+    },
+    {
+      "name": "Start 5",
+      "group": "start",
+      "oldId": 305,
+      "pos": [
+        -204.34545988626326,
+        441.16973029685886,
+        521.8955321473279
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5479910303639968,
+        0.8364842082434104
+      ]
+    },
+    {
+      "name": "Start 6",
+      "group": "start",
+      "oldId": 306,
+      "pos": [
+        -205.98304769751624,
+        444.9284942107587,
+        521.8955321473279
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5479910303639968,
+        0.8364842082434104
+      ]
+    },
+    {
+      "name": "Start 7",
+      "group": "start",
+      "oldId": 307,
+      "pos": [
+        -195.85953846433915,
+        444.3446371737821,
+        521.9451885335071
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5707788088720633,
+        0.8211038614831796
+      ]
+    },
+    {
+      "name": "Start 8",
+      "group": "start",
+      "oldId": 308,
+      "pos": [
+        -197.28807318534837,
+        448.1877203827266,
+        521.9451885335071
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5707788088720633,
+        0.8211038614831796
+      ]
+    },
+    {
+      "name": "Start 9",
+      "group": "start",
+      "oldId": 309,
+      "pos": [
+        -187.4256449081178,
+        447.486203579626,
+        521.9973985050694
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5707788088720633,
+        0.8211038614831796
+      ]
+    },
+    {
+      "name": "Start 10",
+      "group": "start",
+      "oldId": 310,
+      "pos": [
+        -188.854179629127,
+        451.3292867885705,
+        521.9973985050694
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5707788088720633,
+        0.8211038614831796
+      ]
+    },
+    {
+      "name": "Start 11",
+      "group": "start",
+      "oldId": 311,
+      "pos": [
+        -178.94121216161366,
+        450.52744256334717,
+        522.0511776636259
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5756518311889396,
+        0.8176949120844648
+      ]
+    },
+    {
+      "name": "Start 12",
+      "group": "start",
+      "oldId": 312,
+      "pos": [
+        -180.323936909454,
+        454.38724466600866,
+        522.0511776636259
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5756518311889396,
+        0.8176949120844648
+      ]
+    },
+    {
+      "name": "Start 13",
+      "group": "start",
+      "oldId": 313,
+      "pos": [
+        -170.45233663978027,
+        453.55993938271774,
+        522.105209125614
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5809461052860541,
+        0.813942026653597
+      ]
+    },
+    {
+      "name": "Start 14",
+      "group": "start",
+      "oldId": 314,
+      "pos": [
+        -171.78484994635457,
+        457.4373622752847,
+        522.105209125614
+      ],
+      "rot": [
+        0,
+        0,
+        -0.5809461052860541,
+        0.813942026653597
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "devicetype": "keyboard",
+  "version": 1,
+  "bindings": [
+    {
+      "control": "ctrl alt f6",
+      "action": "daytonaRaceStart"
+    },
+    {
+      "control": "ctrl alt f7",
+      "action": "daytonaRaceFlag"
+    },
+    {
+      "control": "ctrl alt f8",
+      "action": "daytonaRaceStatus"
+    }
+  ]
+}

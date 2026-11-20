@@ -1,0 +1,24 @@
+{
+  "daytonaRaceFlag": {
+    "cat": "gameplay",
+    "ctx": "tlua",
+    "onDown": "extensions.load('daytonaRaceControl'); extensions.daytonaRaceControl.flag()",
+    "title": "Daytona Race Control: Advance Flag",
+    "desc": "Call green, wave yellow, or order a double-file restart."
+  },
+  "daytonaRaceStatus": {
+    "cat": "gameplay",
+    "ctx": "tlua",
+    "onDown": "extensions.load('daytonaRaceControl'); extensions.daytonaRaceControl.status()",
+    "title": "Daytona Race Control: Show Position",
+    "desc": "Display the flag, your race position, and your formation lane."
+  },
+  "daytonaRaceStart": {
+    "title": "Daytona Race Control: Start or Stop Race",
+    "cat": "gameplay",
+    "desc": "Start a 10-lap Daytona race against seven Gen 7 opponents, or end the current race.",
+    "actionMap": "Normal",
+    "ctx": "tlua",
+    "onDown": "extensions.load('daytonaRaceControl'); extensions.daytonaRaceControl.toggle()"
+  }
+}

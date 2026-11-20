@@ -1,0 +1,28 @@
+{"name":"FullRoval","internalName":"FullRoval","class":"Prefab","__parent":"MissionGroup","filename":"/levels/lonestar_speedway/art/shapes/track/FullRoval.prefab.json","hidden":true}
+{"name":"sky_and_sun","class":"SimGroup","persistentId":"5489128d-4ebd-416f-b531-7d122356614a","__parent":"MissionGroup"}
+{"name":"CameraBookmarks","class":"SimGroup","persistentId":"060e57cf-aef6-41da-aec0-b5410623e9d8","__parent":"MissionGroup"}
+{"name":"theTerrain","class":"TerrainBlock","persistentId":"ba9d6855-8227-4939-a0b3-eb93da92c38a","__parent":"MissionGroup","position":[-512,-512,100],"materialTextureSet":"lonestar_speedwayTerrainMaterialTextureSet","maxHeight":120,"terrainFile":"/levels/Lonestar_Speedway/theTerrain.ter"}
+{"name":"vegetation","class":"SimGroup","persistentId":"ffd319d0-455a-4e61-b863-0173a257963b","__parent":"MissionGroup"}
+{"name":"Water","class":"SimGroup","persistentId":"4424fff0-23b9-4a3a-ad6a-59d35edba7af","__parent":"MissionGroup"}
+{"name":"PlayerDropPoints","class":"SimGroup","persistentId":"78286bc1-f20d-4970-8a78-fb0a5b6899e5","__parent":"MissionGroup","enabled":"1"}
+{"name":"AIWaypointsGroup","class":"SimGroup","persistentId":"cff7a691-b1f8-40d3-8059-48a26c8ab9dc","__parent":"MissionGroup"}
+{"name":"AIDecalWaypointsGroup","class":"SimGroup","persistentId":"e3f02b7e-8ea6-4f33-8510-1784727193a6","__parent":"MissionGroup"}
+{"class":"TSStatic","persistentId":"a9fb0d42-6ec4-46cf-bc35-f167559223c9","__parent":"MissionGroup","position":[-0.5,0,120],"isRenderEnabled":false,"scale":[1.70000005,1.70000005,1],"shapeName":"/levels/lonestar_speedway/art/shapes/background/Derby_background.dae","useInstanceRenderData":true}
+{"name":"OvalWalls","class":"SimGroup","persistentId":"eb921c9f-0157-4481-9f36-632e27405f47","__parent":"MissionGroup"}
+{"name":"Roval","class":"SimGroup","persistentId":"96c77b65-9a48-47e7-b0bc-c153330e3b23","__parent":"MissionGroup"}
+{"name":"Infield_barriers","class":"SimGroup","persistentId":"95893415-b71f-41be-a7bf-554d98ed5cfd","__parent":"MissionGroup"}
+{"name":"Roval_Deco","class":"SimGroup","persistentId":"17d7d959-051e-4d89-9fa1-93bd32f9b074","__parent":"MissionGroup"}
+{"name":"Rallycross","class":"SimGroup","persistentId":"af1b4e13-a0bf-4f9b-bf3d-7b2dff0abb54","__parent":"MissionGroup"}
+{"name":"NewRiver","class":"River","persistentId":"d6027ff0-4707-4c9e-90ac-57d249a3c474","__parent":"MissionGroup","position":[-198.33902,-263.773895,106.998787],"Foam":[{},{}],"Ripples (texture animation)":[{"rippleDir":[0,1],"rippleSpeed":-0.0649999976,"rippleTexScale":[7.13999987,7.13999987]},{"rippleDir":[0.707000017,0.707000017],"rippleSpeed":0.0900000036,"rippleTexScale":[6.25,12.5]},{"rippleDir":[0.5,0.860000014],"rippleSpeed":0.0399999991,"rippleTexScale":[50,50]}],"Waves (vertex undulation)":[{"waveDir":[0,1],"waveSpeed":1},{"waveDir":[0.707000017,0.707000017],"waveSpeed":1},{"waveDir":[0.5,0.860000014],"waveSpeed":1}],"baseColor":[45,108,171,255],"cubemap":"DefaultSkyCubemap","depthGradientTex":"core/art/water/depthcolor_ramp.png","foamTex":"core/art/water/foam.dds","fullReflect":false,"nodes":[[-213.754807,-287.082092,107.95047,200,5,0,0,1],[-198.623917,-61.9833984,107.95047,200,5,0,0,1]],"rippleTex":"core/art/water/ripple.dds"}
+{"name":"AiRacing","class":"SimGroup","persistentId":"fd58d4b8-5cf2-43c2-9a29-7f3acbb7ed69","__parent":"MissionGroup"}
+{"name":"Decal","class":"SimGroup","persistentId":"e8389e37-6fec-4391-86e4-55681ba2bbfb","__parent":"MissionGroup"}
+{"name":"Outfield","class":"SimGroup","persistentId":"48f9989a-cef8-496d-a080-c4b70043988e","__parent":"MissionGroup"}
+{"name":"DirtOval","class":"SimGroup","persistentId":"8d4324fb-7d15-46b9-847b-30a15adcfab9","__parent":"MissionGroup"}
+{"name":"Spectator Area","class":"SimGroup","persistentId":"75ab7f4f-90a2-4bd5-b681-b00604400faa","__parent":"MissionGroup"}
+{"name":"Sound","class":"SimGroup","persistentId":"f2c9b095-95a0-4c42-95cd-1d680607cfd5","__parent":"MissionGroup"}
+{"name":"Farlands","class":"SimGroup","persistentId":"8ae86a57-125f-445b-87c3-fa7be29b554c","__parent":"MissionGroup"}
+{"name":"Dynamic_Lights","class":"SimGroup","persistentId":"faead737-ab7a-4454-acb7-c49a108acf66","__parent":"MissionGroup"}
+{"name":"Prefabs","class":"SimGroup","persistentId":"f1387d33-fdcc-4036-8ad2-9718619382e7","__parent":"MissionGroup"}
+{"name":"RLS Edits","class":"SimGroup","__parent":"MissionGroup"}
+{"name":"Level Gate","class":"SpawnSphere","__parent":"MissionGroup","position":[500.833069,-499.857941,112.962776],"dataBlock":"SpawnSphereMarker","radius":1,"rotationMatrix":[0.999928355,-0.0119693652,5.57556314e-06,0.0119693652,0.999928355,-8.45849809e-06,-5.47392074e-06,8.52462745e-06,1],"spawnClass":"Player","sphereWeight0":"1"}
+{"name":"switchMaps","class":"BeamNGTrigger","__parent":"MissionGroup","position":[-493.945343,493.867981,114.649178],"luaFunction":"onBeamNGTrigger","rotationMatrix":[-0.031952858,-0.999489248,-7.75026001e-06,0.999489248,-0.031952858,-6.52431072e-06,6.2733352e-06,-7.95477354e-06,1],"scale":[9.95944214,7.80130768,4.77365685]}

@@ -1,0 +1,1 @@
+{"nascarRouteInvisible": {"name": "nascarRouteInvisible", "mapTo": "nascarRouteInvisible", "class": "Material", "Stages": [{"diffuseColor": [0, 0, 0, 0]}], "translucent": true, "translucentBlendOp": "LerpAlpha", "castShadows": false}}

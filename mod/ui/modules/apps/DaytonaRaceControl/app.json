@@ -1,0 +1,21 @@
+{
+  "domElement": "<daytona-race-control></daytona-race-control>",
+  "name": "Stock Car Race Control",
+  "description": "Automatic race control for supported NASCAR oval maps.",
+  "directive": "daytonaRaceControl",
+  "author": "Local Daytona setup",
+  "version": "2.1",
+  "category": "Gameplay",
+  "types": [
+    "ui.apps.categories.racing"
+  ],
+  "interactive": "required",
+  "css": {
+    "top": "32px",
+    "left": "32px",
+    "width": "330px",
+    "height": "215px",
+    "min-width": "300px",
+    "min-height": "205px"
+  }
+}

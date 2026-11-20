@@ -1,0 +1,59 @@
+{
+  "name": "Daytona Gen 7",
+  "tags": [],
+  "type": "custom",
+  "data": [
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_ford_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_chevy_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_toyota_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_ford_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_chevy_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_toyota_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_ford_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_chevy_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_toyota_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_ford_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_chevy_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_toyota_2026"
+    },
+    {
+      "model": "cupgen7",
+      "config": "superspeedway_ford_2026"
+    }
+  ]
+}

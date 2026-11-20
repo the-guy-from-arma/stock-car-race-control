@@ -1,0 +1,395 @@
+<div class="daytona-hud" ng-class="{'race-active':isRacing(),'setup-mode':!isRacing(),'pit-mode':state.pitRepairRequested}">
+  <style>
+    .daytona-hud { box-sizing: border-box; width: 100%; padding: 13px; border: 1px solid #58616e; border-top: 3px solid #ecad35; border-radius: 6px; background: #141a23; color: #f5f7fa; font: 14px Arial, sans-serif; }
+    .daytona-hud header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .daytona-hud h2 { margin: 0; color: inherit; font-size: 15px; font-weight: 800; letter-spacing: .07em; }
+    .daytona-hud .daytona-stage { color: #c6d0dc; font-size: 11px; letter-spacing: .05em; text-align: right; }
+    .daytona-hud .daytona-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; margin-top: 10px; }
+    .daytona-hud .daytona-stat { padding: 6px; border-radius: 3px; background: #242e3c; }
+    .daytona-hud small { display: block; color: #becbda; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+    .daytona-hud .daytona-stat strong { display: block; margin-top: 4px; font-size: 15px; white-space: nowrap; }
+    .daytona-hud .daytona-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 7px; margin-top: 10px; }
+    .daytona-hud .daytona-stepper { display: grid; grid-template-columns: 23px 26px 23px; align-items: center; text-align: center; margin-top: 4px; }
+    .daytona-hud button { padding: 5px 7px; border: 1px solid #667385; border-radius: 4px; background: #263446; color: #f5f7fa; font: inherit; font-size: 12px; cursor: pointer; }
+    .daytona-hud .daytona-stepper button { padding: 3px 0; font-size: 14px; }
+    .daytona-hud button.primary { border-color: #e4ad48; background: #efb447; color: #18130b; font-weight: 700; }
+    .daytona-hud button:disabled { opacity: .45; cursor: default; }
+    .daytona-hud p { margin: 8px 0 0; color: #d8e0e9; font-size: 12px; }
+    .daytona-hud .daytona-alert { color: #ffd171; font-weight: 700; }
+    .daytona-track-signal { position: fixed; z-index: 250; bottom: 224px; right: 24px; width: 240px; height: 76px; box-sizing: border-box; display: flex; align-items: flex-start; justify-content: space-between; gap: 9px; padding: 10px 12px 22px; border: 2px solid #69717b; border-radius: 9px; background: linear-gradient(#333c45, #11171c 45%, #252e37); box-shadow: inset 0 0 0 3px #13191f; pointer-events: none; contain: layout paint style; isolation: isolate; transform: translateZ(0); }
+    .daytona-track-signal[hidden], .daytona-restart-cue[hidden] { display: none; }
+    .daytona-track-signal > span { position: relative; display: block; width: 64px; height: 35px; flex-shrink: 0; overflow: hidden; border: 2px solid #070b10; border-radius: 4px; background: #34260d; box-shadow: inset 0 0 0 2px #4a3616; }
+    .daytona-track-signal > span::after { content: ''; position: absolute; inset: 2px; background: radial-gradient(ellipse at center, transparent 25%, #060a0f88 72%) 0 0 / 8px 8px; pointer-events: none; }
+    .daytona-track-signal .center-lamp { width: 37px; height: 37px; border-radius: 50%; background: #12291e; box-shadow: inset 0 0 0 2px #294c37; }
+    .daytona-track-signal .signal-emitter { position: absolute; inset: 0; display: block; opacity: 0; background: radial-gradient(ellipse, #fffce3 0%, #ffe275 44%, #f8a914 85%); box-shadow: inset 0 0 12px #fff1ae; }
+    .daytona-track-signal .signal-label { position: absolute; left: 0; right: 0; bottom: 5px; color: #bec8ce; text-align: center; font: 700 9px Arial, sans-serif; letter-spacing: .22em; }
+    .daytona-track-signal.amber .amber-lamp .signal-emitter { will-change: opacity; animation: daytona-els-burst 1.4s steps(1, end) infinite; }
+    .daytona-track-signal.green .center-lamp .signal-emitter { opacity: 1; background: radial-gradient(circle at 44% 36%, #d4ffe4, #38f38b 42%, #0c9d53 90%); }
+    .daytona-track-signal.red .center-lamp .signal-emitter { opacity: 1; background: radial-gradient(circle at 44% 36%, #ffd3ca, #ff4944 42%, #9a1120 90%); }
+    .daytona-track-signal.white .center-lamp .signal-emitter { opacity: 1; background: repeating-conic-gradient(#14191f 0% 25%, #fff 0% 50%) 50% / 10px 10px; }
+    @keyframes daytona-els-burst { 0%, 7%, 14%, 45%, 52%, 59% { opacity: 1; } 3%, 10%, 17%, 48%, 55%, 62%, 100% { opacity: 0; } }
+    .daytona-restart-cue { position: fixed; z-index: 260; left: 50%; bottom: 245px; width: 350px; padding: 14px 20px; box-sizing: border-box; border-left: 5px solid #39f18a; background: linear-gradient(90deg, #092219f0, #0a171de0); color: #effff5; text-align: center; pointer-events: none; contain: layout paint style; transform: translateX(-50%); }
+    .daytona-restart-cue strong { display: block; font: 900 34px Arial, sans-serif; letter-spacing: .08em; }
+    .daytona-restart-cue span { display: block; margin-top: 5px; color: #9ef2c2; font: 700 11px Arial, sans-serif; letter-spacing: .16em; }
+    .daytona-restart-cue.green-release { animation: daytona-green-release 3.5s ease-out both; }
+    .daytona-restart-cue.countdown { border-color: #ffcf45; }
+    @keyframes daytona-green-release { 0% { opacity: 0; transform: translate(-50%, 12px) scale(.96); } 10%, 75% { opacity: 1; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -8px) scale(1); } }
+    .daytona-hud .daytona-notice { min-height: 14px; max-width: 440px; color: #e9d3a3; font-size: 11px; }
+    .daytona-hud .daytona-assist { color: #8be7c4; font-weight: 700; }
+
+    .daytona-hud { position: fixed; bottom: 16px; left: 16px; right: 16px; width: auto; display: grid; grid-template-columns: minmax(300px, 1.3fr) 1fr 1.15fr .8fr 1fr; gap: 0; padding: 0; border: 1px solid #3a4655; border-top: 2px solid #efba52; border-radius: 5px; background: rgba(10,16,24,.56); font-family: 'Barlow', 'Roboto', sans-serif; }
+    .daytona-hud section { text-shadow: 0 1px 3px #000; padding: 14px 18px; border-right: 1px solid #35404c; min-width: 0; }
+    .daytona-hud section:last-child { border-right: none; }
+    .daytona-hud h2 { font-size: 12px; letter-spacing: .12em; }
+    .daytona-hud .daytona-stat { background: none; padding: 0; }
+    .daytona-hud .daytona-stat strong { font-size: 21px; }
+    .daytona-hud .daytona-speed { font-size: 59px; font-weight: 800; line-height: 1.03; font-variant-numeric: tabular-nums; }
+    .daytona-engine-line { font-size: 10px; margin: 4px 0 9px; color: #b5c1cc; }
+    .daytona-engine-line b { font-size: 16px; color: white; margin: 0 8px; }
+    .daytona-input { display: flex; gap: 6px; align-items: center; margin-top: 5px; }
+    .daytona-input small { width: 48px; font-size: 9px; }
+    .daytona-input i { height: 5px; background: #34404b; flex: 1; }
+    .daytona-input b { height: 100%; display: block; background: #53ce9c; }
+    .daytona-input.brake b { background: #ff675b; }
+    .daytona-condition { display: flex; gap: 25px; margin-top: 9px; }
+    .daytona-car-map { width: 68px; height: 114px; position: relative; flex-shrink: 0; }
+    .daytona-body { position: absolute; inset: 7px 12px; border-radius: 13px 13px 8px 8px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; border: 2px solid #a5b4c1; background: #182330; }
+    .daytona-tire { position: absolute; width: 8px; height: 22px; border: 1px solid #7c8f9f; border-radius: 3px; background: #1b2633; }
+    .tire-FL { top: 18px; left: 0; } .tire-FR { top: 18px; right: 0; } .tire-RL { bottom: 15px; left: 0; } .tire-RR { bottom: 15px; right: 0; }
+    .daytona-tire.damaged { background: #ff5a50; }
+    .daytona-windshield { position: absolute; top: 35px; left: 17px; width: 34px; height: 25px; background: #152333; border: 1px solid #a3b5c4; border-radius: 5px; }
+    .daytona-temperatures { display: grid; gap: 5px; }
+    .daytona-temperatures b { font-size: 17px; }
+    .daytona-hud .warning { color: #ffc34c; } .daytona-hud .critical { color: #ff5a50; } .daytona-hud .healthy { color: #53ce9c; }
+    .daytona-legend { margin-top: 6px; font-size: 9px; color: #aab8c6; }
+    .daytona-wheel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px 16px; margin-top: 14px; }
+    .daytona-wheel-grid b { font-size: 21px; }
+    .daytona-wheel-grid span { display: block; font-size: 9px; min-height: 10px; }
+    .daytona-g-meter { position: relative; margin: 8px auto; width: 83px; height: 83px; border: 1px solid #5f7182; border-radius: 50%; overflow: hidden; background: linear-gradient(transparent 49%, #495969 50%, transparent 51%), linear-gradient(90deg, transparent 49%, #495969 50%, transparent 51%); }
+    .daytona-g-dot { position: absolute; width: 8px; height: 8px; background: #efba52; border-radius: 50%; transform: translate(-50%,-50%); }
+    .daytona-g-readout { font-size: 11px; margin-bottom: 9px; display: flex; justify-content: space-between; }
+    @media (max-width: 1250px) { .daytona-hud { grid-template-columns: minmax(230px, 1.5fr) 150px 220px 140px 170px; } .daytona-hud section { padding: 10px; } }
+    @media (max-width: 960px) { .daytona-hud { grid-template-columns: 1.5fr 1fr 1.3fr; } .daytona-hud section { padding: 8px; } }
+    .daytona-black-flag { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 9px; padding: 7px; border: 1px solid #89949f; border-left: 3px solid #ffc34c; background: rgba(0,0,0,.82); font-size: 11px; }
+    .daytona-black-flag i { display: block; width: 18px; height: 13px; background: #050505; border: 1px solid #ced6df; transform: skewY(-9deg); }
+    .daytona-black-flag strong { color: #fff; letter-spacing: .07em; }
+    .daytona-black-flag span { color: #ffc34c; }
+    .daytona-option { display: inline-flex; gap: 4px; align-items: center; font-size: 11px; color: #e1e7ed; }
+    .race-ribbon { position:absolute; bottom:calc(100% + 8px); left:0; right:260px; display:flex; align-items:stretch; gap:2px; background:rgba(8,14,22,.74); border:1px solid #445362; border-radius:4px; overflow:hidden; font-variant-numeric:tabular-nums; }
+    .race-ribbon .ribbon-status { padding:9px 14px; min-width:165px; border-left:3px solid #efba52; }
+    .race-ribbon .ribbon-status b { display:block; font-size:12px; margin-top:3px; }
+    .race-ribbon .relative-car { flex:1; padding:9px 12px; border-left:1px solid #35404c; }
+    .race-ribbon .relative-car.you { background:rgba(38,109,88,.45); border-bottom:2px solid #64e6b6; }
+    .race-ribbon .relative-car b { display:block; font-size:15px; margin-top:3px; }
+    .race-ribbon .relative-car em { font-style:normal; font-size:10px; color:#c0cbd5; }
+    .daytona-spotter { margin-top:8px; padding:6px 9px; border:1px solid #647480; color:#eff6fc; font-size:11px; letter-spacing:.08em; }
+    .daytona-spotter.busy { border-color:#ffca54; color:#ffda85; background:rgba(113,72,10,.35); }
+    .daytona-lineup-detail { display:flex; gap:12px; margin-top:7px; color:#c3d1dc; font-size:10px; }
+
+    /* Broadcast graphics: flat panels, restrained borders, tabular live data. */
+    .daytona-hud { bottom:12px;left:14px;right:14px;border:0;border-top:2px solid #e6b332;border-radius:0;background:rgba(7,11,17,.82);grid-template-columns:minmax(345px,1.4fr) .85fr 1.15fr .78fr .85fr;font-family:'Roboto Condensed','Arial Narrow',Arial,sans-serif; }
+    .daytona-hud section { padding:10px 14px;border-color:#26313b;text-shadow:none; }
+    .daytona-hud h2 { font-size:10px;letter-spacing:.1em;color:#9aa8b6; }
+    .daytona-hud .daytona-stat strong { font-size:20px; }
+    .daytona-hud .daytona-stats { margin-top:7px; }
+    .daytona-hud .daytona-speed { font-size:54px;letter-spacing:-.045em; }
+    .daytona-hud p { margin-top:5px;font-size:10px; }
+    .daytona-hud .daytona-notice { max-height:24px;overflow:hidden; }
+    .daytona-hud .daytona-spotter { padding:4px 7px;font-size:10px;border:0;border-left:3px solid #596676;background:#15202a;margin-top:6px; }
+    .daytona-hud .daytona-spotter.busy { background:#352a11;border-color:#ffdc44;color:#ffdf67; }
+    .daytona-hud .daytona-assist { font-size:9px;letter-spacing:.06em; }
+    .daytona-hud .daytona-assist + p.daytona-alert { display:none; }
+    .daytona-hud .daytona-assist ~ p[ng-if="state.lane && !state.blocked && !state.inPit"] { display:none; }
+    .daytona-hud .daytona-condition { gap:18px;margin-top:7px; }
+    .daytona-hud .daytona-car-map { height:96px;width:58px; }
+    .daytona-hud .daytona-temperatures b { font-size:15px; }
+    .daytona-hud .daytona-wheel-grid { gap:8px 12px;margin-top:10px; }
+    .daytona-hud .daytona-wheel-grid b { font-size:18px; }
+    .daytona-hud .daytona-g-meter { width:65px;height:65px; }
+    .daytona-hud button { border-radius:2px;font-size:10px;padding:4px 7px; }
+    .driver-timing { display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;font-size:9px;font-variant-numeric:tabular-nums; }
+    .driver-timing > b { width:100%;color:#f4f6f8;letter-spacing:.04em;text-transform:uppercase;font-size:11px; }
+    .driver-timing span { color:#8e9cab; }
+    .driver-timing strong { color:#f3f6fa;font-size:11px;margin-left:4px; }
+    .broadcast-header { position:fixed;z-index:245;top:12px;left:18px;right:18px;height:36px;background:#0b1018;display:flex;align-items:stretch;box-shadow:0 2px 10px #0008;border-top:3px solid #40d894;font:700 12px 'Arial Narrow',Arial,sans-serif;letter-spacing:.03em;color:#f4f7fa; }
+    .broadcast-brand { display:flex;align-items:center;gap:12px;padding:0 15px;background:#151f2a; }
+    .broadcast-brand>b { color:#070b11;background:#f4f6f8;font-size:10px;padding:3px 5px; }
+    .broadcast-brand span { font-style:italic;letter-spacing:.09em;font-size:11px; }
+    .broadcast-lap { display:flex;align-items:center;gap:7px;padding:0 18px;border-left:1px solid #35404c;color:#a5b2bf;font-size:10px; }
+    .broadcast-stage { white-space:nowrap; gap:10px; }
+    .broadcast-stage i { color:#f0ba42; font-style:normal; margin:0 3px; }
+    .broadcast-stage b { color:#f0ba42; border-left:1px solid #35404c; padding-left:9px; }
+    .stage-option { display:inline-flex; align-items:center; gap:5px; color:#e6edf4; font-size:11px; cursor:pointer; }
+    .broadcast-lap strong { font-size:22px;color:#fff; }
+    .broadcast-lap span { color:#d1d8df; }
+    .broadcast-flag { display:flex;align-items:center;padding:0 18px;background:#14865a;color:#fff;font-size:11px; }
+    .flag-yellow { border-top-color:#ffe043; }.flag-yellow .broadcast-flag { background:#f5d136;color:#11181e; }
+    .flag-red { border-top-color:#ff4c47; }.flag-red .broadcast-flag { background:#d92f37;color:#fff; }
+    .broadcast-track { flex:1;display:flex;align-items:center;padding-left:18px;text-transform:uppercase;color:#aab6c4;font-size:10px; }
+    .broadcast-clock { padding:0 16px;display:flex;align-items:center;font-variant-numeric:tabular-nums;font-size:15px; }
+    .broadcast-ticker { position:absolute;top:36px;left:0;right:0;height:37px;overflow:hidden;background:rgba(9,14,22,.94);border-bottom:2px solid #435363; }
+    .ticker-track { display:flex;width:max-content;height:100%;animation:cup-ticker 56s linear infinite;will-change:transform; }
+    .ticker-group { display:flex;flex-shrink:0; }
+    .ticker-driver { display:flex;align-items:center;width:238px;box-sizing:border-box;gap:8px;padding:0 10px;border-right:1px solid #35414e;font-variant-numeric:tabular-nums; }
+    .ticker-driver i,.tower-row i { font-style:normal;color:#8f9eae;width:16px;font-size:10px; }
+    .driver-number { display:inline-flex;align-items:center;justify-content:center;min-width:27px;height:23px;color:#081019;font-style:italic;font-size:16px;letter-spacing:-.05em;transform:skewX(-7deg); }
+    .ticker-driver strong { flex:1;font-size:12px; }.ticker-driver>span { font-size:10px;color:#c5ced7; }
+    .is-player { background:rgba(58,102,130,.3); }.ticker-driver.is-player { border-bottom:2px solid #71c8f6; }
+    @keyframes cup-ticker { from { transform:translate3d(0,0,0); } to { transform:translate3d(-50%,0,0); } }
+    .broadcast-tower { position:fixed;top:105px;left:18px;z-index:240;width:244px;background:rgba(6,10,16,.89);font:700 11px 'Arial Narrow',Arial,sans-serif;color:#fff;box-shadow:0 4px 14px #0005; }
+    .broadcast-tower header { display:flex;padding:8px 10px;background:#182330;font-size:10px;letter-spacing:.07em;border-left:3px solid #f1cc3c; }
+    .broadcast-tower header span { margin-left:auto;color:#8f9fb0;font-size:8px; }
+    .tower-row { display:flex;align-items:center;gap:6px;height:26px;padding:0 8px;border-bottom:1px solid #26313c;font-variant-numeric:tabular-nums; }
+    .tower-row .driver-number { min-width:25px;height:21px;font-size:14px; }.tower-row strong { flex:1;font-size:10px; }.tower-row>span { font-size:10px;color:#d3dae1; }
+    .broadcast-tower footer { display:flex;justify-content:space-between;padding:7px 9px;color:#a4b0bc;font-size:8px;background:#111b25; }.broadcast-tower footer span { color:#59d7ab; }
+    .daytona-track-signal { top:105px;right:18px;bottom:auto;width:218px;height:65px;border:1px solid #6b7682;border-top:2px solid #a8b4c0;border-radius:3px;padding:8px 9px 18px;background:#080d14;box-shadow:0 3px 14px #0009; }
+    .daytona-track-signal>span { width:72px;height:30px;border:1px solid #394452;border-radius:2px;background:#15130c;box-shadow:none;overflow:visible; }
+    .daytona-track-signal>span::after { inset:0;background:radial-gradient(circle,#ffffff18 0 25%,transparent 35%) 0 0/9px 9px; }
+    .daytona-track-signal .center-lamp { width:30px;height:30px;background:#0c2117;border-radius:50%; }
+    .daytona-track-signal .signal-emitter { background:radial-gradient(circle,#fffffa 0 19%,#fff6a0 25%,#ffca13 46%,#b96b00 67%,transparent 75%) 0 0/9px 9px;box-shadow:0 0 7px #fff4a1,0 0 20px #ffc400,0 0 40px #ffb000aa,inset 0 0 12px #fff38b; }
+    .daytona-track-signal.amber .amber-lamp .signal-emitter { animation:cup-els 1.2s steps(1,end) infinite; }
+    .daytona-track-signal .signal-label { bottom:3px;font-size:8px;letter-spacing:.2em; }
+    @keyframes cup-els { 0%,9%,18% {opacity:1;} 5%,14%,23%,100% {opacity:0;} }
+    .daytona-track-signal { contain:layout style; }
+    .daytona-track-signal.green .center-lamp .signal-emitter { box-shadow:0 0 9px #baffd7,0 0 25px #16f58a,inset 0 0 10px #d5ffe8; }
+    .daytona-track-signal.red .center-lamp .signal-emitter { box-shadow:0 0 9px #ffc2bb,0 0 25px #ff2737,inset 0 0 10px #ffb7ab; }
+    .daytona-restart-cue { top:112px;bottom:auto;width:min(350px, calc(100vw - 540px));border-radius:0; }
+    @media(max-width:1250px) { .broadcast-tower { width:214px; }.ticker-driver { width:220px; }.daytona-hud { grid-template-columns:minmax(290px,1.4fr) 140px 205px 130px 150px; }.daytona-hud section {padding:8px 10px;}.broadcast-track {font-size:9px;} }
+    @media(prefers-reduced-motion:reduce) { .ticker-track {animation:none;} .daytona-track-signal.amber .amber-lamp .signal-emitter {animation:none;opacity:1;} }
+
+    .broadcast-header { height:43px;border-top:0;border-bottom:2px solid #f2d03b;clip-path:none;border-radius:12px 3px 12px 3px;overflow:visible; }
+    .broadcast-header.flag-finish { border-bottom-color:#dce5ef; }
+    .flag-finish .broadcast-flag { background:#dce5ef;color:#142032; }
+    .broadcast-brand { padding:0 22px 0 18px;gap:14px;background:linear-gradient(115deg,#eef2f5 0%,#d3dbe4 95%,transparent 95%);color:#102132; }
+    .cup-brand { display:flex;align-items:center;gap:3px;transform:skewX(-12deg); }
+    .cup-brand i { width:5px;height:22px;background:#09a9e3; }.cup-brand i:nth-child(2) {background:#ed2532;}.cup-brand i:nth-child(3) {background:#f7cd28;}
+    .cup-brand strong { font:1000 italic 22px Arial,sans-serif;letter-spacing:-1px;margin-left:3px; }
+    .broadcast-brand span { font-size:9px;letter-spacing:.12em;color:#344557; }.broadcast-brand>b { background:#dc2735;color:#fff;font-size:9px; }
+    .broadcast-lap { border:0; }.broadcast-flag { transform:skewX(-12deg);padding:0 22px; }
+    .broadcast-header .broadcast-track { min-width:80px; }
+    .opening-shot { align-self:center;padding:5px 12px;border-left:2px solid #64bcf6;color:#9dd9ff;font-size:9px;letter-spacing:.05em; }
+    .broadcast-ticker { top:43px;height:39px;clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%);contain:layout paint style;isolation:isolate; }
+    .ticker-track { transform:translate3d(0,0,0);backface-visibility:hidden;contain:layout style; }
+    .ticker-driver { height:39px;flex-shrink:0; }.ticker-driver .driver-number { height:25px;min-width:30px;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%); }
+    .broadcast-tower { top:112px;border-left:2px solid #d2dbe5;border-radius:3px 14px 3px 3px;overflow:hidden;background:linear-gradient(100deg,rgba(5,12,22,.95),rgba(13,24,39,.91)); }
+    .broadcast-tower header { background:linear-gradient(110deg,#dfe7ee 0%,#aebbc9 96%,#e4bd27 96%);color:#112032;border-left:0;padding-top:10px;padding-bottom:10px;font-weight:900; }.broadcast-tower header span {color:#3f5266;}
+    .tower-row { background:linear-gradient(100deg,#11233855,transparent); }.tower-row.is-player {background:linear-gradient(100deg,#326895aa,#193e6b55);border-left:3px solid #7dccff;padding-left:5px;}
+    .tower-row .driver-number {clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);}
+    .broadcast-tower footer {border-bottom:3px solid #d6b52f;}
+    .daytona-hud { border-radius:4px 20px 4px 4px;border-top:2px solid #b6c2d0;background:linear-gradient(110deg,rgba(6,13,24,.92),rgba(15,25,39,.8)); }
+    .daytona-hud button { border-radius:4px 10px 4px 4px; }.daytona-hud button.primary {background:linear-gradient(115deg,#f7d34b,#f3aa2c);}
+    .daytona-track-signal {top:112px;}.daytona-restart-cue {border-radius:4px 18px 4px 4px;}
+
+    /* Independent HUD pods; no full-width bottom bar. */
+    .daytona-hud { display:block;position:static;width:0;height:0;padding:0;background:none;border:0;border-radius:0;pointer-events:none; }
+    .daytona-hud section { pointer-events:auto;box-sizing:border-box;border:1px solid #3c4e63;border-top:2px solid #d7bc48;border-radius:5px 17px 5px 5px;background:linear-gradient(120deg,rgba(8,17,30,.94),rgba(13,26,43,.9));box-shadow:0 7px 22px #0005; }
+    .daytona-race-panel { position:fixed;left:18px;bottom:16px;width:318px;max-height:210px;overflow-y:auto;padding:11px 13px!important; }
+    .daytona-race-panel h2 {font-size:10px;}.daytona-race-panel .daytona-stats {margin-top:7px;}.daytona-race-panel .daytona-stat strong {font-size:18px;}
+    .daytona-race-panel .driver-timing {margin-top:6px;}.daytona-race-panel .daytona-controls {gap:6px;margin-top:8px;}.daytona-race-panel .daytona-option {font-size:9px;}
+    .daytona-race-panel .daytona-stepper {grid-template-columns:25px 28px 25px;}.daytona-race-panel .daytona-stepper button {font-size:13px;}
+    .daytona-race-panel .daytona-controls button.primary {padding:7px 13px;}.daytona-race-panel .daytona-notice {max-height:25px;font-size:10px;}
+    .daytona-speed-panel {position:fixed;left:50%;transform:translateX(-50%);bottom:16px;width:242px;padding:10px 16px!important;}
+    .daytona-speed-panel .daytona-speed {font-size:52px;line-height:1;}.daytona-speed-panel .daytona-engine-line {margin:4px 0 7px;}.daytona-speed-panel .daytona-input {margin-top:4px;}
+    .daytona-car-panel {position:fixed;right:18px;bottom:16px;width:334px;padding:12px!important;max-height:calc(100vh - 231px);overflow-y:auto;}
+    .condition-header {display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}.condition-header h2 {font-size:13px;color:#edf5ff;margin-top:3px;}.condition-header>span {font-size:8px;color:#74c7e5;letter-spacing:.08em;}
+    .condition-tabs {display:flex;gap:4px;padding-bottom:10px;border-bottom:1px solid #304258;}.condition-tabs button {flex:1;background:#142338;border:1px solid #354a60;padding:6px 2px;font-size:10px;}.condition-tabs button.selected {background:#c5d5e6;color:#0a1523;border-color:#dce6f0;font-weight:800;}
+    .daytona-car-panel .daytona-condition {margin:13px 0;gap:25px;justify-content:center;}.daytona-car-panel .daytona-car-map {height:140px;width:78px;}.daytona-car-panel .daytona-body {inset:6px 12px;}.daytona-car-panel .daytona-windshield {left:18px;width:40px;top:40px;height:29px;}.daytona-car-panel .daytona-tire {height:27px;}
+    .condition-vitals {display:grid;gap:9px;min-width:130px;}.condition-vitals strong {display:block;font-size:23px;line-height:1.1;color:#f1f6fc;}.condition-vitals em,.wheel-diagnostics em {font-style:normal;font-size:10px;color:#94a8be;margin-left:4px;}.condition-vitals small {font-size:8px;}
+    .body-zone-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:12px;}.body-zone-grid span {display:flex;align-items:center;gap:4px;font-size:8px;color:#94a9bc;}.body-zone-grid i {width:5px;height:15px;}.body-zone-grid b {color:#d6e2ed;font-size:7px;}
+    .system-summary>div {display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid #28394c;font-size:10px;color:#c9d7e4;}.system-summary b {font-size:8px;color:#73d8b0;}.system-summary .warning b {color:#ffd268;}.system-summary .critical b {color:#ff8177;}.system-summary .unknown b {color:#7d8da1;}
+    .condition-footer {display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid #354a60;margin-top:10px;font-size:8px;color:#a7bbcf;}
+    .wheel-diagnostics {display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}.wheel-diagnostics>div {padding:10px;background:#102035;border:1px solid #33485f;border-radius:3px 10px 3px 3px;}.wheel-diagnostics header {display:flex;justify-content:space-between;align-items:center;font-size:12px;}.wheel-diagnostics header span {font-size:7px;max-width:80px;color:#a8bed0;text-align:right;}.wheel-diagnostics strong {display:block;font-size:26px;margin:10px 0 3px;}.wheel-diagnostics small {font-size:7px;}.wheel-diagnostics p {font-size:9px;display:flex;justify-content:space-between;}.wheel-diagnostics b {color:#cfe7fb;}
+    .system-details {margin-top:5px;max-height:360px;overflow:auto;}.system-details article {padding:9px 0;border-bottom:1px solid #2c4054;}.system-details header {display:flex;justify-content:space-between;font-size:11px;}.system-details header b {font-size:8px;color:#78dcb4;}.system-details p {font-size:10px;color:#9db2c7;line-height:1.4;}.system-details .critical header b {color:#ff8177;}.system-details .warning header b {color:#ffd268;}.system-details .unknown header b {color:#7d8da1;}
+    .damage-popup-stack {position:fixed;left:50%;bottom:190px;transform:translateX(-50%);width:min(372px, calc(100vw - 632px));max-height:calc(100vh - 405px);overflow-y:auto;display:flex;flex-direction:column;gap:8px;z-index:270;pointer-events:none;}
+    .damage-popup-stack:has(.damage-popup) {pointer-events:auto;}
+    .damage-popup-stack .damage-popup {flex-shrink:0;}
+    .damage-popup {position:relative;display:flex;gap:12px;align-items:center;padding:13px 16px;background:linear-gradient(110deg,rgba(24,32,44,.97),rgba(10,21,35,.96));border:1px solid #8f794b;border-left:4px solid #f7c44f;border-radius:4px 18px 4px 4px;box-shadow:0 7px 22px #0008;overflow:hidden;animation:damage-pop-in .22s ease-out both;}.damage-popup.severe {border-color:#9b514e;border-left-color:#ff6c5f;}.damage-popup-icon {width:29px;height:29px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#f7c44f;color:#172130;font:bold 21px Arial;transform:skewX(-8deg);}.severe .damage-popup-icon {background:#ff6c5f;}.damage-popup small {font-size:8px;letter-spacing:.13em;color:#e5bd71;}.damage-popup h3 {margin:4px 0;font-size:15px;color:#f4f8fc;}.damage-popup p {margin:0;font-size:10px;color:#aebed0;}.damage-popup b {display:block;margin-top:6px;font-size:8px;letter-spacing:.06em;color:#e6c78d;}.damage-popup-life {position:absolute;bottom:0;left:0;height:2px;background:#e9be69;animation:damage-pop-life 6.5s linear both;transform-origin:left;width:100%;}
+    @keyframes damage-pop-in {from {opacity:0;transform:translateY(12px);}to {opacity:1;transform:translateY(0);}}@keyframes damage-pop-life {to {transform:scaleX(0);}}
+    @media(max-width:1250px) {.daytona-car-panel {width:294px;right:12px;}.daytona-race-panel {width:286px;left:12px;}.daytona-speed-panel {width:206px;}.daytona-car-panel .daytona-condition {gap:15px;}.body-zone-grid {gap:3px;}}
+    @media(prefers-reduced-motion:reduce) {.damage-popup,.damage-popup-life {animation:none;}}
+
+    .daytona-hud .daytona-black-flag {margin-top:7px;border-radius:3px 12px 3px 3px;border:1px solid #718297;border-left:4px solid #fff;background:#050a11;padding:8px;}.daytona-black-flag strong {font-size:10px;}.daytona-black-flag span {font-size:10px;}
+    .pit-repair-request {width:100%;margin-top:7px;padding:8px!important;text-align:left;background:#1e4f64!important;border-color:#4e9fb8!important;color:#e7faff!important;font-weight:bold;}.pit-repair-request span {float:right;font-size:8px;font-weight:normal;opacity:.8;margin-top:2px;}
+    .pit-plan-banner {display:flex;flex-direction:column;gap:4px;margin-top:7px;padding:8px;border-left:3px solid #7bd7ef;background:#17384a;font-size:9px;}.pit-plan-banner span {color:#a5d4e4;}
+    .damage-popup button {pointer-events:auto;margin-top:8px;background:#2c5368;border-color:#6aabc3;color:#edfaff;padding:5px 10px;font-size:10px;}
+    .tow-options {display:flex;flex-wrap:wrap;gap:5px;}
+    .damage-popup-stack:has(.tow-prompt) {max-height:calc(100vh - 325px);}
+    .damage-popup .tow-options .primary {background:#efb447;color:#231a0a;border-color:#efb447;}
+    .daytona-race-panel .caution-instruction {color:#f4d582;}
+
+    .race-active .daytona-race-panel .daytona-notice,.race-active .daytona-race-panel .daytona-assist,.race-active .daytona-race-panel p[ng-if="state.lane && !state.blocked && !state.inPit"],.race-active .daytona-race-panel p[ng-if="state.responding && !state.blocked"],.race-active .daytona-race-panel p[ng-if="state.blocked"] {display:none;}
+    .pit-mode .daytona-race-panel .daytona-stats,.pit-mode .daytona-race-panel .driver-timing,.pit-mode .daytona-race-panel .daytona-lineup-detail,.pit-mode .daytona-race-panel .daytona-spotter {display:none;}
+    .race-active .daytona-race-panel .pit-repair-request {margin-bottom:5px;}
+    .daytona-race-panel.pit-offer .driver-timing {display:none;}
+    .stage-option:has(input:disabled) {opacity:.55;cursor:default;}
+    .ticker-track.ticker-solo { animation:none; }
+    .tower-rows { max-height:max(72px, calc(46vh - 174px)); overflow:auto; scrollbar-width:thin; overscroll-behavior:contain; }
+    .tower-row { box-sizing:border-box; }
+    .tower-rows.full-field .tower-row { height:22px; }
+    .tower-rows.full-field .driver-number { height:18px; }
+    .tower-rows::-webkit-scrollbar { width:5px; }
+    .tower-rows::-webkit-scrollbar-thumb { background:#425569; }
+    .tower-row strong { min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .broadcast-header .broadcast-track { min-width:0; overflow:hidden; }
+    .broadcast-track span { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+    .broadcast-stage { min-width:0; }
+    .broadcast-stage span { overflow:hidden; text-overflow:ellipsis; }
+    .broadcast-stage b { white-space:nowrap; }
+    @media(max-width:1000px) {
+      .broadcast-brand>span, .broadcast-brand>b, .opening-shot { display:none; }
+      .broadcast-lap { padding:0 9px; }
+      .broadcast-header .broadcast-flag { padding:0 10px; white-space:nowrap; }
+      .daytona-race-panel { width:min(286px, 31vw); }
+      .daytona-car-panel { width:min(294px, 31vw); }
+      .daytona-speed-panel { width:min(206px, 24vw); }
+      .damage-popup-stack { width:min(372px, calc(38vw - 40px)); }
+    }
+    @media(max-width:820px) {
+      .broadcast-tower, .daytona-track-signal { width:178px; }
+      .daytona-restart-cue { width:min(350px, calc(100vw - 408px)); }
+      .daytona-restart-cue strong { font-size:clamp(17px, 3.6vw, 30px); }
+      .daytona-race-panel .daytona-result-actions button { font-size:11px; padding:5px 6px; }
+      .damage-popup.tow-prompt {padding:8px 9px;}
+      .tow-prompt .damage-popup-icon {display:none;}
+    }
+    @media(max-height:1040px) {
+      body:has(.daytona-race-panel) [data-app-name="navigation"] .minimap-container-wrapper {
+        position:absolute; left:0; bottom:0;
+        max-width:calc(54vh - 220px);
+        max-height:calc(54vh - 240px);
+      }
+      .daytona-race-panel { max-height:min(210px, 22vh); }
+    }
+    @media(max-height:600px) {
+      body:has(.daytona-race-panel) .ui-apps-overlay .overlay-item:not(.is-editing):has([data-app-name="navigation"]) {
+        top:auto!important; left:12px!important; bottom:calc(22vh + 25px)!important;
+        width:clamp(84px, calc(78vh - 260px), 160px)!important;
+        height:clamp(64px, calc(78vh - 280px), 140px)!important;
+      }
+      body:has(.daytona-race-panel) [data-app-name="navigation"] .minimap-container-wrapper {
+        max-width:100%; max-height:100%;
+      }
+    }
+  </style>
+  <div class="broadcast-header" ng-if="state.broadcast.length" ng-class="{'flag-yellow':state.phase === 'yellow' || state.phase === 'pace' || state.phase === 'restart', 'flag-red':state.blocked, 'flag-finish':state.phase === 'checkered' || state.phase === 'finished'}">
+    <div class="broadcast-brand"><div class="cup-brand"><i></i><i></i><i></i><strong>NASCAR</strong></div><span>CUP SERIES</span><b>LIVE</b></div>
+    <div class="broadcast-lap broadcast-stage" ng-if="state.stage"><span ng-if="state.stageBreak">{{state.stageWinner}} WINS STAGE {{state.stage - 1}}</span><span ng-if="!state.stageBreak">STAGE {{state.stage}} <i>&bull;</i> ENDS LAP {{state.stageEnd}}</span><b>{{state.stagePoints}} PTS</b></div>
+    <div class="broadcast-lap">LAP <strong>{{state.lap}}</strong><span>/ {{state.laps}}</span></div>
+    <div class="broadcast-flag">{{state.blocked ? 'RED FLAG' : state.phase === 'green' ? 'GREEN FLAG' : state.phase === 'yellow' ? 'CAUTION' : flags[state.phase]}}</div>
+    <div class="broadcast-track"><span>{{state.trackName}}</span></div><div class="opening-shot" ng-if="state.openingPace">{{state.cameraShot || 'OPENING PACE LAP'}} · AI CONTROL</div><div class="broadcast-clock">{{raceTime(state.raceClock)}}</div>
+    <div class="broadcast-ticker"><div class="ticker-track" ng-class="{'ticker-solo':state.running === 1}">
+      <div class="ticker-group" ng-repeat="copy in (state.running === 1 ? [0] : [0,1])">
+        <div class="ticker-driver" ng-repeat="car in tickerDrivers track by car.id" ng-class="{'is-player':car.player}"><i>{{car.position}}</i><b class="driver-number" ng-style="{'background-color':car.color}">{{car.number}}</b><strong>{{car.shortName}}</strong><span>{{broadcastGap(car)}}</span></div>
+      </div>
+    </div></div>
+  </div>
+  <aside class="broadcast-tower" ng-if="state.broadcast.length">
+    <header>{{state.phase === 'finished' ? 'FINAL RESULTS' : 'RUNNING ORDER'}} <span>{{state.running}} CARS</span></header>
+    <div class="tower-rows" ng-class="{'full-field':state.running > 12}" aria-label="Running order" tabindex="0"><div class="tower-row" ng-repeat="car in towerDrivers track by car.id" ng-class="{'is-player':car.player}"><i>{{car.position}}</i><b class="driver-number" ng-style="{'background-color':car.color}">{{car.number}}</b><strong>{{car.shortName}}</strong><span>{{broadcastGap(car)}}</span></div></div>
+    <footer ng-if="state.phase !== 'finished'">INTERVAL TO LEADER <span>LIVE TIMING</span></footer>
+  </aside>
+  <section class="daytona-race-panel" ng-class="{'pit-offer':state.canRequestPitRepair}">
+  <header>
+    <h2>{{state.trackName || 'STOCK CAR RACE CONTROL'}}</h2>
+    <span class="daytona-stage">{{flags[state.phase]}}</span>
+  </header>
+  <div ng-if="isRacing()">
+  <div class="daytona-black-flag" ng-if="state.blackFlag">
+    <i aria-hidden="true"></i><strong>BLACK FLAG</strong><span>{{state.blackFlagReason}}</span>
+  </div>
+  <div class="pit-plan-banner" ng-if="state.pitRepairRequested"><b>PIT REPAIRS · AI CONTROL</b><span>{{state.blocked ? 'Queued · waiting for red to clear' : state.pitPlanPhase==='queued' ? 'Waiting for pit entrance' : state.pitPlanPhase==='servicing' ? 'Pit crew repairing the car' : 'AI driving to your pit box'}}</span></div>
+  <button class="pit-repair-request" ng-if="state.canRequestPitRepair" ng-disabled="state.manualPits && state.blocked" ng-click="requestPitRepair()">{{state.manualPits ? 'Take control for pits' : state.blocked ? 'Queue pit repairs' : 'Pit for repairs'}} <span>{{state.manualPits ? 'YOU DRIVE' : 'AI DRIVES TO BOX'}}</span></button>
+
+
+  <div class="daytona-stats" ng-if="state.phase !== 'idle'">
+    <div class="daytona-stat"><small>Lap</small><strong>{{state.lap}} / {{state.laps}}</strong></div>
+    <div class="daytona-stat"><small>Position</small><strong>{{state.position ? 'P' + state.position : '-'}} / {{state.field}}</strong></div>
+    <div class="daytona-stat"><small>{{state.lane ? 'Lineup' : 'Field'}}</small><strong>{{state.lane || state.field + ' cars'}}</strong></div>
+  </div>
+  <div class="driver-timing" ng-if="state.driverName"><b>#{{state.carNumber}} {{state.driverName}}</b><span>LAP <strong>{{lapTime(state.currentLapTime)}}</strong></span><span>LAST <strong>{{lapTime(state.lastLap)}}</strong></span><span>BEST <strong>{{lapTime(state.bestLap)}}</strong></span></div>
+  <div class="daytona-lineup-detail" ng-if="state.lane"><span>ROW {{state.row}} · {{state.lane | uppercase}}</span><span ng-if="state.followNumber">FOLLOW CAR {{state.followNumber}}</span><span ng-if="state.paceMph">PACE {{state.paceMph}} MPH</span></div>
+  <div class="daytona-spotter" ng-if="state.spotter && state.phase !== 'idle'" ng-class="{'busy':state.spotter !== 'CLEAR'}">{{state.spotter}}</div>
+  <p class="daytona-assist" ng-if="state.cautionAssist">{{state.blocked ? "AI HOLDING · RED FLAG" : "AI PACING · CONTROL RETURNS AT GREEN"}}</p>
+  <p class="caution-instruction" ng-if="state.playerManualCaution">{{state.blocked ? 'Red flag. Stop safely.' : 'You have control. Join the line behind the pace car.'}}</p>
+  <p class="caution-instruction" ng-if="state.towPending">Stop and wait for the recovery crew.</p>
+  <p class="daytona-alert" ng-if="state.blocked">Red flag. AI holding the field until the track clears.</p>
+  <p class="daytona-alert" ng-if="state.responding && !state.blocked">Emergency crews on track. Hold position.</p>
+  <p ng-if="state.lane && !state.blocked && !state.inPit">{{formationHint()}}</p>
+  <p ng-if="state.pitLimiter" class="daytona-alert">PIT LIMITER ACTIVE &middot; {{state.pitLimitMph}} mph</p>
+  <p ng-if="state.inPit && !state.pitCountdown && !state.resetPenalty">
+    Pit road &middot; {{state.pitLimitMph}} mph<span ng-if="!state.pitReady"> &middot; Stop at the marked box</span>
+  </p>
+  <p class="daytona-alert" ng-if="state.inPit && state.pitPenalty">Pit speeding &middot; +5 seconds to service</p>
+  <div class="daytona-controls" ng-if="state.inPit && state.phase !== 'finished' && state.phase !== 'checkered' && !state.resetPenalty">
+    <button type="button" ng-if="!state.pitCountdown" ng-disabled="!state.pitReady" ng-click="repair()">Repair car</button>
+    <button type="button" ng-if="!state.pitCountdown" ng-disabled="!state.pitReady" ng-click="refuel()">Refuel</button>
+    <button type="button" class="primary" ng-if="state.pitPenalty && !state.pitCountdown" ng-disabled="!state.pitReady" ng-click="servePenalty()">Serve 5s penalty</button>
+    <span ng-if="state.pitCountdown">Service &middot; {{state.pitCountdown}}s</span>
+    <button type="button" ng-if="state.pitCountdown" ng-click="cancelPit()">Cancel service</button>
+  </div>
+  </div>
+  <p class="daytona-notice" ng-if="state.notice && !state.result">{{state.notice.text}}</p>
+  <p class="daytona-alert" ng-if="unavailable">BeamNG could not load race control. Restart the game to reload the mod.</p>
+  <p ng-if="!unavailable && state.phase === 'idle' && !state.available">{{state.unsupportedReason}}</p>
+  <p ng-if="state.phase === 'idle' && state.available && !state.ready">Spawn one BSC Gen 7 stock car.</p>
+  <div class="daytona-controls daytona-result-actions" ng-if="state.phase === 'finished'">
+    <button type="button" class="primary" ng-disabled="!state.ready" ng-click="startRace()">Race again</button>
+    <button type="button" ng-click="stopRace()">End session</button>
+  </div>
+  <p ng-if="state.result">{{state.result}}</p>
+  <div class="daytona-controls" ng-if="state.phase === 'idle' || state.phase === 'finished'">
+    <div ng-repeat="setting in settings track by setting.key">
+      <small>{{setting.label}}</small>
+      <div class="daytona-stepper">
+        <button type="button" aria-label="Fewer {{setting.label}}" ng-click="step(setting, -1)" ng-disabled="atEnd(setting, -1)">&#8722;</button>
+        <strong>{{options[setting.key]}}</strong>
+        <button type="button" aria-label="More {{setting.label}}" ng-click="step(setting, 1)" ng-disabled="atEnd(setting, 1)">+</button>
+      </div>
+    </div>
+    <span class="daytona-option">{{options.opponents + 1}} drivers total · You + {{options.opponents}} AI</span>
+    <label class="stage-option"><input type="checkbox" ng-model="options.stages" ng-disabled="options.laps < 6"> Stage racing (10+ laps)</label>
+    <button type="button" class="primary" ng-if="state.phase === 'idle'" ng-disabled="!state.ready" ng-click="startRace()">Start race</button>
+  </div>
+  <div class="daytona-controls" ng-if="state.phase !== 'idle' && state.phase !== 'finished'">
+    <button type="button" ng-if="state.canTow && !state.towOffer" ng-disabled="state.towPending" ng-click="requestTow()">{{state.towPending ? 'Tow requested' : 'Request tow'}}</button>
+    <button type="button" ng-click="stopRace()">End session</button>
+  </div>
+  </section>
+  <section class="daytona-speed-panel" ng-if="isRacing()">
+    <small>Speed / mph</small>
+    <div class="daytona-speed">{{format(telemetry.speed)}}</div>
+    <div class="daytona-engine-line">GEAR <b>{{telemetry.gear || '—'}}</b> <span>{{format(telemetry.rpm)}} RPM</span></div>
+    <div class="daytona-input"><small>Throttle</small><i><b ng-style="{'width': telemetry.throttle + '%'}"></b></i></div>
+    <div class="daytona-input brake"><small>Brake</small><i><b ng-style="{'width': telemetry.brake + '%'}"></b></i></div>
+  </section>
+  <section class="daytona-car-panel" ng-if="isRacing()">
+    <header class="condition-header"><div><small>LIVE VEHICLE DIAGNOSTICS</small><h2>CAR CONDITION</h2></div><span>TELEMETRY</span></header>
+    <nav class="condition-tabs"><button ng-class="{'selected':conditionTab==='overview'}" ng-click="conditionTab='overview'">Overview</button><button ng-class="{'selected':conditionTab==='wheels'}" ng-click="conditionTab='wheels'">Tires / brakes</button><button ng-class="{'selected':conditionTab==='systems'}" ng-click="conditionTab='systems'">Systems</button></nav>
+    <div ng-if="conditionTab==='overview'">
+      <div class="daytona-condition">
+        <div class="daytona-car-map" aria-label="Body zones and tire condition, front at top"><div class="daytona-body"><div ng-repeat="zone in zones" ng-style="{'background':damageColor(zone)}" title="{{zone}}: {{bodyStatus(zone)}}"></div></div><span ng-repeat="corner in corners" class="daytona-tire tire-{{corner}}" ng-class="{'damaged':tireDamaged(corner)}" title="{{corner}}: {{cornerCondition(corner)}}"></span><div class="daytona-windshield"></div></div>
+        <div class="condition-vitals"><div ng-class="{'warning':telemetry.water>=115}"><small>COOLANT</small><strong>{{format(telemetry.water)}}<em>°C</em></strong></div><div ng-class="{'warning':telemetry.oil>=140}"><small>OIL</small><strong>{{format(telemetry.oil)}}<em>°C</em></strong></div><div><small>FUEL REMAINING</small><strong>{{format(telemetry.fuel)}}<em>%</em></strong></div></div>
+      </div>
+      <div class="body-zone-grid"><span ng-repeat="zone in zones"><i ng-style="{'background':damageColor(zone)}"></i>{{zone}} <b>{{bodyStatus(zone)}}</b></span></div>
+      <div class="system-summary"><div ng-repeat="system in conditionSystems" ng-class="{'critical':system.level===2,'warning':system.level===1,'unknown':!system.known}"><span>{{system.name}}</span><b>{{system.status}}</b></div></div>
+    </div>
+    <div class="wheel-diagnostics" ng-if="conditionTab==='wheels'"><div ng-repeat="corner in corners" ng-class="{'warning':brakes[corner].finalBrakeEfficiency<0.9,'critical':tireDamaged(corner)}"><header>{{corner}}<span>{{cornerCondition(corner)}}</span></header><strong>{{format(brakes[corner].brakeSurfaceTemperature)}}<em>°C</em></strong><small>BRAKE SURFACE</small><p>Brake efficiency <b>{{format(brakes[corner].finalBrakeEfficiency * 100)}}%</b></p></div></div>
+    <div class="system-details" ng-if="conditionTab==='systems'"><article ng-repeat="system in conditionSystems" ng-class="{'critical':system.level===2,'warning':system.level===1,'unknown':!system.known}"><header>{{system.name}}<b>{{system.status}}</b></header><p>{{system.detail}}</p></article></div>
+    <footer class="condition-footer"><span>LAT {{format(telemetry.lateral,2)}} G</span><span>LONG {{format(telemetry.longitudinal,2)}} G</span><span>SLIP {{format(telemetry.slip,2)}}</span></footer>
+  </section>
+  <div class="damage-popup-stack" ng-if="isRacing()" aria-live="polite">
+    <article class="damage-popup tow-prompt" ng-if="state.towOffer">
+      <div class="damage-popup-icon" aria-hidden="true">!</div>
+      <div>
+        <small>{{state.towOffer}}</small>
+        <h3>Need a tow?</h3>
+        <p>{{state.blocked ? 'Stop safely under red.' : 'You have control. Recover when clear or request a tow to the pit box.'}}</p>
+        <div class="tow-options">
+          <button type="button" class="primary" ng-click="requestTow()">Request tow</button>
+          <button type="button" ng-click="dismissTow()">Keep driving</button>
+        </div>
+      </div>
+    </article>
+    <article class="damage-popup" ng-repeat="alert in damageAlerts track by alert.key" ng-class="{'severe':alert.critical}"><div class="damage-popup-icon">!</div><div><small>{{alert.critical?'CRITICAL VEHICLE ALERT':'VEHICLE CONDITION'}}</small><h3>{{alert.title}}</h3><p>{{alert.detail}}</p><b>{{alert.action}}</b><button ng-if="state.canRequestPitRepair" ng-click="requestPitRepair()">Pit for repairs</button></div><div class="damage-popup-life"></div></article>
+  </div>
+</div>
